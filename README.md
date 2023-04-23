@@ -31,7 +31,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 create .env file in the root with
-DATABASE_URL=
+DATABASE_URL= {mongo cluster url}
 
 NEXTAUTH_JWT_SECRET="NEXT-JWT-SECRET"
 
