@@ -2,11 +2,18 @@ import Input from "@/components/Input";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+<<<<<<< HEAD
 
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
 const Auth = () => {
+=======
+import { useRouter } from "next/router";
+
+const Auth = () => {
+  const router = useRouter();
+>>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -24,12 +31,23 @@ const Auth = () => {
       await signIn("credentials", {
         email,
         password,
+<<<<<<< HEAD
         callbackUrl: "/profiles",
       });
     } catch (error) {
       console.log(error);
     }
   }, [email, password]);
+=======
+        redirect: false,
+        callbackUrl: "/",
+      });
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }, [email, password, router]);
+>>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
 
   const register = useCallback(async () => {
     try {
@@ -85,6 +103,7 @@ const Auth = () => {
             >
               {variant === "login" ? "Login" : "Sign up"}
             </button>
+<<<<<<< HEAD
 
             <div className="flex flex-row items-center gap-4 mt-8 justify-center">
               <div
@@ -101,6 +120,8 @@ const Auth = () => {
               </div>
             </div>
 
+=======
+>>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
             <p className="text-neutral-500 mt-12">
               {variant === "login"
                 ? "First time using Netflix?"
