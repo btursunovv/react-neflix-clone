@@ -1,20 +1,13 @@
-import NextAuth from "next-auth/next";
-import Credentials from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
-
-<<<<<<< HEAD
+import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-
+import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { compare } from "bcrypt";
+import prismadb from "@/libs/prismadb";
 
-=======
->>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
-import prismadb from "@/lib/prismadb";
-
-export default NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
-<<<<<<< HEAD
     GithubProvider({
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
@@ -23,8 +16,6 @@ export default NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
-=======
->>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
     Credentials({
       id: "credentials",
       name: "Credentials",
@@ -35,28 +26,31 @@ export default NextAuth({
         },
         password: {
           label: "Password",
-          type: "password",
+          type: "passord",
         },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error("Email and password required");
         }
+
         const user = await prismadb.user.findUnique({
           where: {
             email: credentials.email,
           },
         });
+
         if (!user || !user.hashedPassword) {
-          throw new Error("User doesnt not exist");
+          throw new Error("Email does not exist");
         }
 
         const isCorrectPassword = await compare(
           credentials.password,
           user.hashedPassword
         );
+
         if (!isCorrectPassword) {
-          throw new Error("Incorrect Password");
+          throw new Error("Incorrect password");
         }
 
         return user;
@@ -67,15 +61,12 @@ export default NextAuth({
     signIn: "/auth",
   },
   debug: process.env.NODE_ENV === "development",
-<<<<<<< HEAD
   adapter: PrismaAdapter(prismadb),
-=======
->>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
-  session: {
-    strategy: "jwt",
-  },
+  session: { strategy: "jwt" },
   jwt: {
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);

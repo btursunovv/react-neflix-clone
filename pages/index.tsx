@@ -1,7 +1,11 @@
-<<<<<<< HEAD
 import Billboard from "@/components/Billboard";
+import InfoModal from "@/components/InfoModal";
+import MovieList from "@/components/MovieList";
 import NavBar from "@/components/NavBar";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import useFavorites from "@/hooks/useFavorites";
+import useInfoModal from "@/hooks/useInfoModel";
+import useMovieList from "@/hooks/useMovieList";
 import { NextPageContext } from "next";
 import { getSession } from "next-auth/react";
 
@@ -23,16 +27,19 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 export default function Home() {
+  const { data: movies = [] } = useMovieList();
+  const { data: favorites = [] } = useFavorites();
+  const { isOpen, closeModal } = useInfoModal();
+
   return (
     <>
+      <InfoModal visible={isOpen} onClose={closeModal} />
       <NavBar />
       <Billboard />
-=======
-export default function Home() {
-  return (
-    <>
-      <h1>Netflix clone</h1>
->>>>>>> e87a011aa1f20236fe2eaa0139c641f1319203e3
+      <div className="pb-40">
+        <MovieList title="Trending Now" data={movies} />
+        <MovieList title="My List" data={favorites} />
+      </div>
     </>
   );
 }
